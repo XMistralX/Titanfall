@@ -10,6 +10,15 @@ var GameLayer = cc.LayerColor.extend({
         this.setKeyboardEnabled( true );
         this.player.scheduleUpdate();
         return true;
+    },
+    onKeyDown: function( e ){
+        if( e == cc.KEY.left){
+            this.player.setFlippedX(true);
+            this.player.movement(1);
+        }
+        else if( e == cc.KEY.right){
+            this.player.movement(2);
+        }
     }
 });
 
