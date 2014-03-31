@@ -17,9 +17,13 @@ var GameLayer = cc.LayerColor.extend({
             this.player.movement(1);
         }
         else if( e == cc.KEY.right){
+            this.player.setFlippedX(false);
             this.player.movement(2);
         }
-    }
+    },
+    isFlipped : true,
+    
+
 });
 
 var StartScene = cc.Scene.extend({
