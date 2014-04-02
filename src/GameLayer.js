@@ -20,17 +20,27 @@ var GameLayer = cc.LayerColor.extend({
             this.player.setFlippedX(false);
             this.player.movement(2);
         }
-    },
-    isFlipped : true,
-    
+    },/**createBlocks : function(){
+        this.blocks = [];
+        var groundBlock = new Block(0,0,700,160);
+        this.blocks.push(groundBlock);
+
+        this.blocks.forEach( function (b ){
+            this.addChild( b );    
+        },this);
+    }
+        
+    **/
 
 });
 
 var StartScene = cc.Scene.extend({
     onEnter: function() {
         this._super();
-        var layer = new GameLayer();
+        //Create Background
         var background = new BackgroundLayer();
+        // Create GameLater
+        var layer = new GameLayer();
         background.init();
         layer.init();
         this.addChild( background);
