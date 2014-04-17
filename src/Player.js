@@ -6,9 +6,7 @@ var Player = cc.Sprite.extend({
         this.x = x;
         this.y = y;
 
-        this.maxVx = 3;
-        this.accX = 0.25;
-        this.backAccX = 0.5;
+
         this.jumpV = 20;
         this.g = -1;
         
@@ -43,7 +41,7 @@ var Player = cc.Sprite.extend({
                         spriteRect.height );
     },
     
-    update: function() {
+    update: function( dt) {
         var currentPositionRect = this.getPlayerRect();
 
         this.updateYMovement();
@@ -58,21 +56,16 @@ var Player = cc.Sprite.extend({
 
     updateXMovement: function() {
         if ( this.ground ) {
-            if ( ( !this.moveLeft ) && ( !this.moveRight ) ) {
-                this.autoDeaccelerateX();
-            } else if ( this.moveRight ) {
-                this.accelerateX( 1 );
-            } else {
-                this.accelerateX( -1 );
+            if ( this.moveRight ) {
+                this.x += 10 ;
+                this.moveRight = false;
+            } 
+            else if( this.moveLeft) {
+                this.x -= 10;
+                this.moveLeft = false;
             }
         }
-        this.x += this.vx;
-        if ( this.x < 0 ) {
-            this.x += screenWidth;
-        }
-        if ( this.x > screenWidth ) {
-            this.x -= screenWidth;
-        }
+        
     },
 
     updateYMovement: function() {
@@ -109,7 +102,7 @@ var Player = cc.Sprite.extend({
                 
                 if ( topBlock ) {
                     this.ground = topBlock;
-                    this.y = topBlock.getTopY();
+                   
                     this.vy = 0;
                 }
             }
