@@ -5,6 +5,8 @@ var GameLayer = cc.LayerColor.extend({
         this._super( new cc.Color4B( 127, 127, 127, 0 ) );
         this.setPosition( new cc.Point( 0, 0 ) );
         
+        this.createBlocks();
+
         this.player = new Player();
         this.player.setPosition( new cc.Point ( 150 , 150 ) );
         this.addChild( this.player);
@@ -26,17 +28,20 @@ var GameLayer = cc.LayerColor.extend({
             this.player.movement(2);
         }
 
-    },/**createBlocks : function(){
+    },
+
+    createBlocks : function(){
         this.blocks = [];
+
         var groundBlock = new Block(0,0,700,160);
-        this.blocks.push(groundBlock);
+        this.blocks.push(groundBlock); 
+        console.log("Hello");
 
         this.blocks.forEach( function (b ){
             this.addChild( b );    
         },this);
     }
         
-    **/ 
 
 });
 
