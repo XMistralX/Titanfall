@@ -8,7 +8,7 @@ var GameLayer = cc.LayerColor.extend({
         this.createBlocks();
 
         this.player = new Player();
-        this.player.setPosition( new cc.Point ( 150 , 150 ) );
+        this.player.setPosition( new cc.Point ( 150 , 220 ) );
         this.addChild( this.player);
         this.player.scheduleUpdate();
 
@@ -33,7 +33,7 @@ var GameLayer = cc.LayerColor.extend({
     createBlocks : function(){
         this.blocks = [];
 
-        var groundBlock = new Block(0,0,700,160);
+        var groundBlock = new Block(50,150,800,200);
         this.blocks.push(groundBlock); 
         console.log("Hello");
 
@@ -63,7 +63,7 @@ var BackgroundLayer = cc.Layer.extend({
     init: function(){
         this._super( new cc.Color4B( 127, 127, 127, 255 ) );
         this.background = new Background();
-        this.background.setPosition( new cc.Point(1050,400));
+        this.background.setPosition( new cc.Point(400,300));
         this.addChild( this.background);
         console.log("Layer");
         return true;

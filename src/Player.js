@@ -2,7 +2,7 @@ var Player = cc.Sprite.extend({
 
 	ctor: function(){
 		this._super();
-		this.initWithFile('images/Marcc.png');
+		this.initWithFile('images/marco.png');
 		this.direction = 0;
 		console.log( "Created Object");
 	},
