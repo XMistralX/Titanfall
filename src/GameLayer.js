@@ -6,7 +6,7 @@ var GameLayer = cc.LayerColor.extend({
         this.setPosition( new cc.Point( 0, 0 ) );
         
         this.player = new Player();
-        this.player.setPosition( new cc.Point ( 150 , 220 ) );
+        this.player.setPosition( new cc.Point ( 150 , 150 ) );
         this.addChild( this.player);
         this.player.scheduleUpdate();
 
