@@ -7,27 +7,23 @@ var GameLayer = cc.LayerColor.extend({
         
         this.createBlocks();
 
-        this.player = new Player();
-        this.player.setPosition( new cc.Point ( 150 , 220 ) );
+        this.player = new Player( 400 , 300);
+        this.player.setBlocks( this.blocks );
         this.addChild( this.player);
-        this.player.scheduleUpdate();
+        this.scheduleOnce(function() {
+            this.player.scheduleUpdate();
+        }, 1);
+  
 
         this.setKeyboardEnabled( true );
-        
 
+        this.scheduleUpdate();
+        
         return true;
     },
     
     onKeyDown: function( e ){
-        if( e == cc.KEY.left){
-            this.player.setFlippedX(true);
-            this.player.movement(1);
-        }
-        else if( e == cc.KEY.right){
-            this.player.setFlippedX(false);
-            this.player.movement(2);
-        }
-
+        this.player.handleKeyDown( e );
     },
 
     createBlocks : function(){
