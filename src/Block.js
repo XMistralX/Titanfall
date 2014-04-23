@@ -1,5 +1,6 @@
 var Block = cc.Sprite.extend({
-    ctor: function( x1, y1, x2, y2 ) {
+    ctor: function( x1, y1, x2, y2 ) 
+    {
         this._super();
         this.initWithFile( 'images/Checker.png',
                            cc.rect( 0, 0, x2-x1, y2 - y1 ) );
@@ -7,11 +8,13 @@ var Block = cc.Sprite.extend({
         this.setPosition( cc.p( x1, y1 ) );
     },
 
-    getTopY: function() {
+    getTopY: function() 
+    {
         return cc.rectGetMaxY( this.getBoundingBoxToWorld() );
     },
 
-    hitTop: function( oldRect, newRect ) {
+    hitTop: function( oldRect, newRect ) 
+    {
         var brect = this.getBoundingBoxToWorld();
         if ( cc.rectGetMinY( oldRect ) >= cc.rectGetMaxY( brect ) ) {
             var loweredNewRect = cc.rect( newRect.x,
@@ -24,7 +27,8 @@ var Block = cc.Sprite.extend({
         return false;
     },
 
-    onTop: function( rect ) {
+    onTop: function( rect ) 
+    {
         var brect = this.getBoundingBoxToWorld();
         var bminx = cc.rectGetMinX( brect );
         var bmaxx = cc.rectGetMaxX( brect );

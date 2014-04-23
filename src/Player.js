@@ -1,5 +1,6 @@
 var Player = cc.Sprite.extend({
-    ctor: function( x, y ) {
+    ctor: function( x, y ) 
+    {
         this._super();
         this.initWithFile( 'images/marco.png' );
         this.setAnchorPoint( cc.p( 0.5, 0 ) );
@@ -24,12 +25,14 @@ var Player = cc.Sprite.extend({
         this.updateSpritePosition();
     },
 
-    updateSpritePosition: function() {
+    updateSpritePosition: function() 
+    {
         this.setPosition( cc.p( Math.round( this.x ),
                                 Math.round( this.y ) ) );
     },
 
-    getPlayerRect: function() {
+    getPlayerRect: function() 
+    {
         var spriteRect = this.getBoundingBoxToWorld();
         var spritePos = this.getPosition();
 
@@ -41,7 +44,8 @@ var Player = cc.Sprite.extend({
                         spriteRect.height );
     },
     
-    update: function( dt) {
+    update: function( dt) 
+    {
         var currentPositionRect = this.getPlayerRect();
 
         this.updateYMovement();
@@ -54,53 +58,69 @@ var Player = cc.Sprite.extend({
         this.updateSpritePosition();
     },
 
-    updateXMovement: function() {
-        if ( this.ground ) {
-            if ( this.moveRight ) {
+    updateXMovement: function() 
+    {
+        if ( this.ground ) 
+        {
+            if ( this.moveRight ) 
+            {
                 this.x += 10 ;
+                this.setFlippedX(false);
                 this.moveRight = false;
             } 
-            else if( this.moveLeft) {
+            else if( this.moveLeft)
+            {
                 this.x -= 10;
+                this.setFlippedX(true);
                 this.moveLeft = false;
             }
         }
         
     },
 
-    updateYMovement: function() {
-        if ( this.ground ) {
+    updateYMovement: function() 
+    {
+        if ( this.ground ) 
+        {
             this.vy = 0;
-            if ( this.jump ) {
+            if ( this.jump ) 
+            {
                 this.vy = this.jumpV;
                 this.y = this.ground.getTopY() + this.vy;
                 this.ground = null;
             }
-        } else {
+        } 
+        else 
+        {
             this.vy += this.g;
             this.y += this.vy;
         }
     },
 
-    isSameDirection: function( dir ) {
+    isSameDirection: function( dir )
+    {
         return ( ( ( this.vx >=0 ) && ( dir >= 0 ) ) ||
                  ( ( this.vx <= 0 ) && ( dir <= 0 ) ) );
     },
 
-
-
-    handleCollision: function( oldRect, newRect ) {
+    handleCollision: function( oldRect, newRect ) 
+    {
         if ( this.ground ) {
-            if ( !this.ground.onTop( newRect ) ) {
+            if ( !this.ground.onTop( newRect ) ) 
+            {
                 this.ground = null;
             }
-        } else {
-            if ( this.vy <= 0 ) {
+        } 
+        else 
+        {
+            if ( this.vy <= 0 ) 
+            {
                 var topBlock = this.findTopBlock( this.blocks,
                                                   oldRect,
                                                   newRect );
                 
-                if ( topBlock ) {
+                if ( topBlock ) 
+                {
                     this.ground = topBlock;
                    
                     this.vy = 0;
@@ -109,13 +129,17 @@ var Player = cc.Sprite.extend({
         }
     },
     
-    findTopBlock: function( blocks, oldRect, newRect ) {
+    findTopBlock: function( blocks, oldRect, newRect ) 
+    {
         var topBlock = null;
         var topBlockY = -1;
         
-        blocks.forEach( function( b ) {
-            if ( b.hitTop( oldRect, newRect ) ) {
-                if ( b.getTopY() > topBlockY ) {
+        blocks.forEach( function( b ) 
+        {
+            if ( b.hitTop( oldRect, newRect ) ) 
+            {
+                if ( b.getTopY() > topBlockY ) 
+                {
                     topBlockY = b.getTopY();
                     topBlock = b;
                 }
@@ -125,19 +149,24 @@ var Player = cc.Sprite.extend({
         return topBlock;
     },
     
-    handleKeyDown: function( e ) {
-        if ( Player.KEYMAP[ e ] != undefined ) {
+    handleKeyDown: function( e )
+    {
+        if ( Player.KEYMAP[ e ] != undefined ) 
+        {
             this[ Player.KEYMAP[ e ] ] = true;
         }
     },
 
-    handleKeyUp: function( e ) {
-        if ( Player.KEYMAP[ e ] != undefined ) {
+    handleKeyUp: function( e ) 
+    {
+        if ( Player.KEYMAP[ e ] != undefined )
+        {
             this[ Player.KEYMAP[ e ] ] = false;
         }
     },
 
-    setBlocks: function( blocks ) {
+    setBlocks: function( blocks ) 
+    {
         this.blocks = blocks;
     }
 });
@@ -146,4 +175,5 @@ Player.KEYMAP = {}
 Player.KEYMAP[cc.KEY.left] = 'moveLeft';
 Player.KEYMAP[cc.KEY.right] = 'moveRight';
 Player.KEYMAP[cc.KEY.up] = 'jump';
+
         

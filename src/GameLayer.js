@@ -13,7 +13,8 @@ var GameLayer = cc.LayerColor.extend({
         this.scheduleOnce(function() {
             this.player.scheduleUpdate();
         }, 1);
-  
+        //var x = cc.Follow.create(this.jumper , cc.Rectmap);
+        //this.runaction(x);
 
         this.setKeyboardEnabled( true );
 
@@ -26,12 +27,12 @@ var GameLayer = cc.LayerColor.extend({
         this.player.handleKeyDown( e );
     },
 
-    createBlocks : function(){
+    createBlocks : function()
+    {
         this.blocks = [];
 
         var groundBlock = new Block(50,150,800,200);
         this.blocks.push(groundBlock); 
-        console.log("Hello");
 
         this.blocks.forEach( function (b ){
             this.addChild( b );    
@@ -42,7 +43,8 @@ var GameLayer = cc.LayerColor.extend({
 });
 
 var StartScene = cc.Scene.extend({
-    onEnter: function() {
+    onEnter: function() 
+    {
         this._super();
 
         var layer = new GameLayer();
@@ -55,13 +57,13 @@ var StartScene = cc.Scene.extend({
     }
 });
 
-var BackgroundLayer = cc.Layer.extend({
+var BackgroundLayer = cc.Layer.extend(
+{
     init: function(){
         this._super( new cc.Color4B( 127, 127, 127, 255 ) );
         this.background = new Background();
         this.background.setPosition( new cc.Point(400,300));
         this.addChild( this.background);
-        console.log("Layer");
         return true;
     }
 
