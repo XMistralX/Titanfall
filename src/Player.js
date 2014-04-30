@@ -48,7 +48,7 @@ var Player = cc.Sprite.extend({
     {
         var currentPositionRect = this.getPlayerRect();
 
-        this.updateYMovement();
+        //this.updateYMovement();
         this.updateXMovement();
 
         var newPositionRect = this.getPlayerRect();
@@ -60,8 +60,7 @@ var Player = cc.Sprite.extend({
 
     updateXMovement: function() 
     {
-        if ( this.ground ) 
-        {
+        
             if ( this.moveRight ) 
             {
                 this.x += 10 ;
@@ -74,13 +73,13 @@ var Player = cc.Sprite.extend({
                 this.setFlippedX(true);
                 this.moveLeft = false;
             }
-        }
+        
         
     },
 
     updateYMovement: function() 
     {
-        if ( this.ground ) 
+        /*if ( this.ground ) 
         {
             this.vy = 0;
             if ( this.jump ) 
@@ -94,7 +93,7 @@ var Player = cc.Sprite.extend({
         {
             this.vy += this.g;
             this.y += this.vy;
-        }
+        }*/
     },
 
     isSameDirection: function( dir )

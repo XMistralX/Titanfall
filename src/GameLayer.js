@@ -2,22 +2,22 @@ var screenWidth = 700 ;
 var screenHeight = 216;
 var GameLayer = cc.LayerColor.extend({
     init: function() {
-        this._super( new cc.Color4B( 127, 127, 127, 0 ) );
+        this._super( new cc.Color4B( 127, 127, 127, 0 ) ,2126,260);
         this.setPosition( new cc.Point( 0, 0 ) );
+ 
+    
+        this.background = new Background(400,150);
+        this.background.setPosition(400,150);
+        this.addChild(this.background);
+        this.background.scheduleUpdate();
+        this.player = new Player( 600 , 50);
         
-        this.createBlocks();
-
-        this.player = new Player( 400 , 300);
-        this.player.setBlocks( this.blocks );
+    
+        var followAction = cc.Follow.create(this.player , cc.rect(0,0,2126,260));
+        this.runAction(followAction);
         this.addChild( this.player);
-        this.scheduleOnce(function() {
-            this.player.scheduleUpdate();
-        }, 1);
-        //var x = cc.Follow.create(this.jumper , cc.Rectmap);
-        //this.runaction(x);
-
         this.setKeyboardEnabled( true );
-
+        this.player.scheduleUpdate();
         this.scheduleUpdate();
         
         return true;
@@ -31,8 +31,7 @@ var GameLayer = cc.LayerColor.extend({
     {
         this.blocks = [];
 
-        var groundBlock = new Block(50,150,800,200);
-        this.blocks.push(groundBlock); 
+        
 
         this.blocks.forEach( function (b ){
             this.addChild( b );    
@@ -48,23 +47,11 @@ var StartScene = cc.Scene.extend({
         this._super();
 
         var layer = new GameLayer();
-        var background = new BackgroundLayer();
 
-        background.init();
         layer.init();
-        this.addChild( background);
+ 
         this.addChild( layer );
     }
 });
 
-var BackgroundLayer = cc.Layer.extend(
-{
-    init: function(){
-        this._super( new cc.Color4B( 127, 127, 127, 255 ) );
-        this.background = new Background();
-        this.background.setPosition( new cc.Point(400,300));
-        this.addChild( this.background);
-        return true;
-    }
 
-});

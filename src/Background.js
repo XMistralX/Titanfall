@@ -1,10 +1,22 @@
 var Background = cc.Sprite.extend(
 {
-    ctor:function()
+    ctor:function(x,y)
     {
         this._super();
-        this.initWithFile('images/backgroundPrototype.png');
+        this.initWithFile('images/background2.png');
+
+        this.x = x;
+        this.y = y;
+        this.setAnchorPoint(cc.p(0,0.5));
     },
+    update : function()
+    {
+    	this.updatePostion();
+    },
+    updatePostion:function()
+    {
+    this.setPosition( cc.p( this.x, this.y ) );
+    } 
 
     
 });
