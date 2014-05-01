@@ -7,7 +7,8 @@ var Background = cc.Sprite.extend(
 
         this.x = x;
         this.y = y;
-        this.setAnchorPoint(cc.p(0,0.5));
+        this.setAnchorPoint(cc.p(0,0));
+        this.setPosition(new cc.Point(x,y));
     },
     update : function()
     {

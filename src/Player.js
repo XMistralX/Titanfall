@@ -1,25 +1,21 @@
 var Player = cc.Sprite.extend({
-    ctor: function( x, y ) 
+    ctor: function( x, y, gameLayer ) 
     {
         this._super();
         this.initWithFile( 'images/marco.png' );
-        this.setAnchorPoint( cc.p( 0.5, 0 ) );
+        this.gameLayer = gameLayer;
+
         this.x = x;
         this.y = y;
-
-
-        this.jumpV = 20;
         this.g = -1;
-        
         this.vx = 0;
         this.vy = 0;
 
-        this.moveLeft = false;
-        this.moveRight = false;
-        this.jump = false;
+        this._moveLeft = false;
+        this._moveRight = false;
+        this._jump = false;
 
         this.ground = null;
-
         this.blocks = [];
 
         this.updateSpritePosition();
@@ -27,8 +23,8 @@ var Player = cc.Sprite.extend({
 
     updateSpritePosition: function() 
     {
-        this.setPosition( cc.p( Math.round( this.x ),
-                                Math.round( this.y ) ) );
+        this.setPosition( cc.p( Math.round( this._x ),
+                                Math.round( this._y ) ) );
     },
 
     getPlayerRect: function() 
@@ -60,20 +56,23 @@ var Player = cc.Sprite.extend({
 
     updateXMovement: function() 
     {
-        
+        if(this.gameLayer._isWalking)
+        {
             if ( this.moveRight ) 
             {
-                this.x += 10 ;
+                this._x += 10 ;
                 this.setFlippedX(false);
-                this.moveRight = false;
+                this._moveRight = false;
+                console.log("move left");
             } 
-            else if( this.moveLeft)
+            if( this.moveLeft)
             {
-                this.x -= 10;
+                this._x -= 10;
                 this.setFlippedX(true);
-                this.moveLeft = false;
+                this._moveLeft = false;
+                console.log("move right");
             }
-        
+        }
         
     },
 
@@ -148,22 +147,6 @@ var Player = cc.Sprite.extend({
         return topBlock;
     },
     
-    handleKeyDown: function( e )
-    {
-        if ( Player.KEYMAP[ e ] != undefined ) 
-        {
-            this[ Player.KEYMAP[ e ] ] = true;
-        }
-    },
-
-    handleKeyUp: function( e ) 
-    {
-        if ( Player.KEYMAP[ e ] != undefined )
-        {
-            this[ Player.KEYMAP[ e ] ] = false;
-        }
-    },
-
     setBlocks: function( blocks ) 
     {
         this.blocks = blocks;
