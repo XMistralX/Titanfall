@@ -5,16 +5,20 @@ var screenHeight = 216;
 var g_sharedGameLayer;
 var GameLayer = cc.LayerColor.extend(
 {
+    _bulletBatch : null,
+    _maxX : 2126,
+    _maxY : 260,
+
     init: function() {
-        this._super( new cc.Color4B( 127, 127, 127, 0 ) ,2126,260);
+        this._super( new cc.Color4B( 127, 127, 127, 0 ) , this.getMaxX() , this.getMaxY());
         this.setPosition( new cc.Point( 0, 0 ) );
-        this._isWalking = false;
-        this._maxX = 2126;
     
         this.background = new Background(0,0);
         this.addChild(this.background);
         this.player = new Player( 400, 25, this);
-        this._isWalking = false;
+        
+        this.fx = new FXLayer();
+
 
         var followAction = cc.Follow.create(this.player , cc.rect(0,0,2126,216));
         this.runAction(followAction);
@@ -23,8 +27,6 @@ var GameLayer = cc.LayerColor.extend(
         this.player.scheduleUpdate();
         this.background.scheduleUpdate();
         this.scheduleUpdate();
-        this.bullet = new Bullet( 400 ,30 , "left");
-        this.addChild(this.bullet);
         g_sharedGameLayer = this;
         
         return true;
@@ -55,6 +57,7 @@ var GameLayer = cc.LayerColor.extend(
     addBullet : function ( bullet )
     {
         this.addChild(bullet);
+        bullet.scheduleUpdate();
     },
 
     getMaxX : function ()

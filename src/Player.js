@@ -24,26 +24,6 @@ var Player = cc.Sprite.extend({
     },
 
     //not using 
-    handleKeypad : function( keyPressed)
-    {
-        switch( keyPressed )
-        {
-            case cc.KEY.left:
-
-            this._moveLeft = true;
-            break;
-
-            case cc.KEY.right:
-
-            this._moveRight = true;
-            break;
-
-            case cc.KEY.space:
-            console.log("Bullet Fired ");
-            this.intializeBullet();
-            break;
-        } 
-    },
 
     handleKeyDown : function ( e )
     {
@@ -66,6 +46,7 @@ var Player = cc.Sprite.extend({
     
     update: function( dt) 
     {
+
         var currentPositionRect = this.getPlayerRect();
 
         //this.updateYMovement();
@@ -131,15 +112,15 @@ var Player = cc.Sprite.extend({
 
     intializeBullet : function()
     {
-        if( this._moveLeft )
+        if( this.flippedX )
         {
-            bullets[bulletCount] = new Bullet(this.x,this.y,"left");
-            g_sharedGameLayer.addBullet( bullets[bulletCount] );
+            this.bullets[this.bulletCount] = new Bullet( this.x, this.y, "left");
+            g_sharedGameLayer.addBullet( this.bullets[this.bulletCount] );
         }
-        if( this._moveRight)
+        else
         {
-            bullets[bulletCount] = new Bullet(this.x,this.y,"right");
-            g_sharedGameLayer.addBullet( bullets[bulletCount] );
+            this.bullets[this.bulletCount] = new Bullet(this.x,this.y,"right");
+            g_sharedGameLayer.addBullet( this.bullets[this.bulletCount] );
         }
 
         this.bulletCount++    
@@ -150,7 +131,9 @@ var Player = cc.Sprite.extend({
     {
         if( this._attack )       
         {
+            console.log("attack");
             this.intializeBullet();
+            this._attack = false;
         }
     },
     //recode handle collision
@@ -226,7 +209,7 @@ var Player = cc.Sprite.extend({
 Player.KEYMAP = {}
 Player.KEYMAP[cc.KEY.left] = '_moveLeft';
 Player.KEYMAP[cc.KEY.right] = '_moveRight';
-Player.KEYMAP[cc.KEY.space] = "_attack"
+Player.KEYMAP[cc.KEY.c] = "_attack"
 Player.KEYMAP[cc.KEY.up] = '_jump';
 
         

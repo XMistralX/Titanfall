@@ -1,31 +1,21 @@
 var Bullet = cc.Sprite.extend({
-    ctor:function( x, y , bulletDirection  , gameLayer)
+    ctor:function( x, y , bulletDirection )
     {
         this._super();
         this.initWithFile('images/Bullet.png');
 
         this.x = x;
         this.y = y;
-        this.setAnchorPoint(cc.p(0,0));
         this._vx = 5;
-        this.gameLayer = gameLayer;
         this.bulletDirection = bulletDirection;
-
-        this.setPosition( this.x , this.y);
-        this.gameLayer.addChild(this);
+    
+        this.updateSpritePosition();
     },
 
     getX : function ()
     {
         return this.x;
     },
-
-    bulletConstraint : function ( dt) 
-    {
-        if( bullet.getX() > this.gameLayer.getMaxX() )
-            this.gameLayer.removeChild(this);
-    },
-
 
     update : function ( dt )
     {
@@ -35,11 +25,11 @@ var Bullet = cc.Sprite.extend({
 
     updateMovement : function ()
     {
-    	if( bulletDirection == "left")
+    	if( this.bulletDirection == "left")
     	{
     		this.x -= this._vx;
     	}
-    	if( bulletDirection == "right")
+    	if( this.bulletDirection == "right")
     	{
     		this.x += this._vx;
     	}
@@ -65,9 +55,9 @@ var Bullet = cc.Sprite.extend({
 
     checkBoundary : function ()
     {
-        if( this.x >this.gameLayer.getMaxX()  && this.x > 0 )
+        if( this.x > g_sharedGameLayer.getMaxX()  && this.x > 0 )
             return true;
-        if( this.y > this.gameLayer.getMaxY()  && this.y > 0)
+        if( this.y > g_sharedGameLayer.getMaxY()  && this.y > 0)
             return true;
         return false;
     },
