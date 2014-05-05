@@ -15,7 +15,8 @@
             'src/GameLayer.js',
             'src/Player.js',
             'src/Background.js',
-            'src/Block.js'    //add your own files in order here
+            'src/Block.js'  ,
+            'src/Bullet.js'  //add your own files in order here
         ]
     };
 

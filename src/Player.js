@@ -1,9 +1,8 @@
 var Player = cc.Sprite.extend({
-    ctor: function( x, y, gameLayer ) 
+    ctor: function( x, y ) 
     {
         this._super();
         this.initWithFile( 'images/marco.png' );
-        this.gameLayer = gameLayer;
 
         this.x = x;
         this.y = y;
@@ -14,30 +13,55 @@ var Player = cc.Sprite.extend({
         this._moveLeft = false;
         this._moveRight = false;
         this._jump = false;
+        this._attack = false;
 
         this.ground = null;
         this.blocks = [];
+        this.bullets = [];
+        this.bulletCount = 0;
 
         this.updateSpritePosition();
     },
 
-    updateSpritePosition: function() 
+    //not using 
+    handleKeypad : function( keyPressed)
     {
-        this.setPosition( cc.p( Math.round( this._x ),
-                                Math.round( this._y ) ) );
+        switch( keyPressed )
+        {
+            case cc.KEY.left:
+
+            this._moveLeft = true;
+            break;
+
+            case cc.KEY.right:
+
+            this._moveRight = true;
+            break;
+
+            case cc.KEY.space:
+            console.log("Bullet Fired ");
+            this.intializeBullet();
+            break;
+        } 
     },
 
-    getPlayerRect: function() 
+    handleKeyDown : function ( e )
     {
-        var spriteRect = this.getBoundingBoxToWorld();
-        var spritePos = this.getPosition();
+        if ( Player.KEYMAP[ e ] != undefined ) 
+            this[ Player.KEYMAP[ e ] ] = true;
+        
+    },
 
-        var dX = this.x - spritePos.x;
-        var dY = this.y - spritePos.y;
-        return cc.rect( spriteRect.x + dX,
-                        spriteRect.y + dY,
-                        spriteRect.width,
-                        spriteRect.height );
+    handleKeyUp : function ( e )
+    {
+        if ( Player.KEYMAP[ e ] != undefined ) 
+            this[ Player.KEYMAP[ e ] ] = false;
+    },
+
+    updateSpritePosition: function() 
+    {
+        this.setPosition( cc.p( Math.round( this.x ),
+                                Math.round( this.y ) ) );
     },
     
     update: function( dt) 
@@ -45,34 +69,38 @@ var Player = cc.Sprite.extend({
         var currentPositionRect = this.getPlayerRect();
 
         //this.updateYMovement();
+        
         this.updateXMovement();
+        this.updateSpritePosition();
+        this.attack();
 
         var newPositionRect = this.getPlayerRect();
         this.handleCollision( currentPositionRect,
                               newPositionRect );
 
-        this.updateSpritePosition();
+        
     },
 
     updateXMovement: function() 
     {
-        if(this.gameLayer._isWalking)
-        {
-            if ( this.moveRight ) 
+            // add velocity and accerelation
+            if ( this._moveRight ) 
             {
-                this._x += 10 ;
+                this.x += 20 ;
                 this.setFlippedX(false);
                 this._moveRight = false;
-                console.log("move left");
+                console.log("move left"+this.x);
             } 
-            if( this.moveLeft)
+            if( this._moveLeft)
             {
-                this._x -= 10;
+                this.x -= 20;
                 this.setFlippedX(true);
                 this._moveLeft = false;
-                console.log("move right");
+                console.log("move right"+this.x);
             }
-        }
+
+
+        
         
     },
 
@@ -101,6 +129,31 @@ var Player = cc.Sprite.extend({
                  ( ( this.vx <= 0 ) && ( dir <= 0 ) ) );
     },
 
+    intializeBullet : function()
+    {
+        if( this._moveLeft )
+        {
+            bullets[bulletCount] = new Bullet(this.x,this.y,"left");
+            g_sharedGameLayer.addBullet( bullets[bulletCount] );
+        }
+        if( this._moveRight)
+        {
+            bullets[bulletCount] = new Bullet(this.x,this.y,"right");
+            g_sharedGameLayer.addBullet( bullets[bulletCount] );
+        }
+
+        this.bulletCount++    
+
+    },
+
+    attack : function ()
+    {
+        if( this._attack )       
+        {
+            this.intializeBullet();
+        }
+    },
+    //recode handle collision
     handleCollision: function( oldRect, newRect ) 
     {
         if ( this.ground ) {
@@ -125,8 +178,25 @@ var Player = cc.Sprite.extend({
                 }
             }
         }
+
+        
+
+
     },
     
+    getPlayerRect: function() 
+    {
+        var spriteRect = this.getBoundingBoxToWorld();
+        var spritePos = this.getPosition();
+
+        var dX = this.x - spritePos.x;
+        var dY = this.y - spritePos.y;
+        return cc.rect( spriteRect.x + dX,
+                        spriteRect.y + dY,
+                        spriteRect.width,
+                        spriteRect.height );
+    },
+
     findTopBlock: function( blocks, oldRect, newRect ) 
     {
         var topBlock = null;
@@ -154,8 +224,9 @@ var Player = cc.Sprite.extend({
 });
 
 Player.KEYMAP = {}
-Player.KEYMAP[cc.KEY.left] = 'moveLeft';
-Player.KEYMAP[cc.KEY.right] = 'moveRight';
-Player.KEYMAP[cc.KEY.up] = 'jump';
+Player.KEYMAP[cc.KEY.left] = '_moveLeft';
+Player.KEYMAP[cc.KEY.right] = '_moveRight';
+Player.KEYMAP[cc.KEY.space] = "_attack"
+Player.KEYMAP[cc.KEY.up] = '_jump';
 
         

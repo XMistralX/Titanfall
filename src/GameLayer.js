@@ -1,42 +1,43 @@
 // make UpdateXMovement update constantly
 var screenWidth = 700 ;
 var screenHeight = 216;
+
+var g_sharedGameLayer;
 var GameLayer = cc.LayerColor.extend(
 {
     init: function() {
         this._super( new cc.Color4B( 127, 127, 127, 0 ) ,2126,260);
         this.setPosition( new cc.Point( 0, 0 ) );
         this._isWalking = false;
+        this._maxX = 2126;
     
         this.background = new Background(0,0);
         this.addChild(this.background);
-        this.background.scheduleUpdate();
-        this.player = new Player( 400, 50, this);
-        
-    
+        this.player = new Player( 400, 25, this);
+        this._isWalking = false;
+
         var followAction = cc.Follow.create(this.player , cc.rect(0,0,2126,216));
         this.runAction(followAction);
         this.addChild( this.player);
         this.setKeyboardEnabled( true );
         this.player.scheduleUpdate();
+        this.background.scheduleUpdate();
         this.scheduleUpdate();
+        this.bullet = new Bullet( 400 ,30 , "left");
+        this.addChild(this.bullet);
+        g_sharedGameLayer = this;
         
         return true;
     },
     
     onKeyDown: function( e )
     {
-        this._isWalking = true;
-        if( e = cc.KEY.left)
-        {
-            console.log("Left : "+e);
-            this.player.moveLeft = true;
-        }
-        if ( e = cc.KEY.right)
-        {
-            console.log("Right : "+e);
-            this.player.moveRight = true;
-        }
+        this.player.handleKeyDown( e );
+    },
+
+    onKeyUp : function ( e )
+    {
+        this.player.handleKeyUp( e );
     },
 
     createBlocks : function()
@@ -45,15 +46,25 @@ var GameLayer = cc.LayerColor.extend(
 
         
 
-        this.blocks.forEach( function (b ){
+        this.blocks.forEach( function (b )
+        {
             this.addChild( b );    
         },this);
     },
 
-    handleKeyDown : function ( e )
+    addBullet : function ( bullet )
     {
-        
+        this.addChild(bullet);
+    },
 
+    getMaxX : function ()
+    {
+        return this._maxX;
+    },
+
+    getMaxY : function ()
+    {
+        return this._maxY;
     }
         
 
@@ -61,7 +72,7 @@ var GameLayer = cc.LayerColor.extend(
 
 var StartScene = cc.Scene.extend(
 {
-    onEnter: function() 
+    onEnter: function()  
     {
         this._super();
 
