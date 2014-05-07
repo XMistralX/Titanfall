@@ -16,7 +16,8 @@
             'src/Player.js',
             'src/Background.js',
             'src/Block.js'  ,
-            'src/Bullet.js' , //add your own files in order here
+            'src/Bullet.js' ,
+            'src/Enemy.js' //add your own files in order here
         ]
     };
 

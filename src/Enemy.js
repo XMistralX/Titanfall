@@ -1,8 +1,8 @@
-var Player = cc.Sprite.extend({
+var Enemy = cc.Sprite.extend({
     ctor: function( x, y ) 
     {
         this._super();
-        this.initWithFile( 'images/marco.png' );
+        this.initWithFile( 'images/enemy.png' );
 
         this.x = x;
         this.y = y;
@@ -28,15 +28,15 @@ var Player = cc.Sprite.extend({
 
     handleKeyDown : function ( e )
     {
-        if ( Player.KEYMAP[ e ] != undefined ) 
-            this[ Player.KEYMAP[ e ] ] = true;
+        if ( Enemy.KEYMAP[ e ] != undefined ) 
+            this[ Enemy.KEYMAP[ e ] ] = true;
         
     },
 
     handleKeyUp : function ( e )
     {
-        if ( Player.KEYMAP[ e ] != undefined ) 
-            this[ Player.KEYMAP[ e ] ] = false;
+        if ( Enemy.KEYMAP[ e ] != undefined ) 
+            this[ Enemy.KEYMAP[ e ] ] = false;
     },
 
     updateSpritePosition: function() 
@@ -48,7 +48,7 @@ var Player = cc.Sprite.extend({
     update: function( dt) 
     {
 
-        var currentPositionRect = this.getPlayerRect();
+        var currentPositionRect = this.getEnemyRect();
 
         //this.updateYMovement();
         
@@ -56,7 +56,7 @@ var Player = cc.Sprite.extend({
         this.updateSpritePosition();
         this.attack();
 
-        var newPositionRect = this.getPlayerRect();
+        var newPositionRect = this.getEnemyRect();
         this.handleCollision( currentPositionRect,
                               newPositionRect );
 
@@ -132,12 +132,7 @@ var Player = cc.Sprite.extend({
 
     attack : function ()
     {
-        if( this._attack )       
-        {
-            console.log("attack");
-            this.intializeBullet();
-            this._attack = false;
-        }
+        
     },
     //recode handle collision
     handleCollision: function( oldRect, newRect ) 
@@ -170,7 +165,7 @@ var Player = cc.Sprite.extend({
 
     },
     
-    getPlayerRect: function() 
+    getEnemyRect: function() 
     {
         var spriteRect = this.getBoundingBoxToWorld();
         var spritePos = this.getPosition();
@@ -209,10 +204,5 @@ var Player = cc.Sprite.extend({
     }
 });
 
-Player.KEYMAP = {}
-Player.KEYMAP[cc.KEY.left] = '_moveLeft';
-Player.KEYMAP[cc.KEY.right] = '_moveRight';
-Player.KEYMAP[cc.KEY.c] = "_attack"
-Player.KEYMAP[cc.KEY.up] = '_jump';
 
         

@@ -8,7 +8,9 @@ var Bullet = cc.Sprite.extend({
         this.y = y;
         this._vx = 5;
         this.bulletDirection = bulletDirection;
-    
+        
+        
+        this.setBulletDirection();
         this.updateSpritePosition();
     },
 
@@ -39,6 +41,14 @@ var Bullet = cc.Sprite.extend({
     {
     	this.setPosition( cc.p( Math.round( this.x ),
     							Math.round( this.y ) ) );
+    },
+
+    setBulletDirection : function ()
+    {
+        if( this.bulletDirection == "left")
+            this.setFlippedX(true);
+        else
+            this.setFlippedX(false);
     },
 
     handleCollision : function ( rect )
