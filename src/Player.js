@@ -18,13 +18,11 @@ var Player = cc.Sprite.extend({
 
         this.ground = null;
         this.blocks = [];
-        this.bullets = [];
+
         this.bulletCount = 0;
 
         this.updateSpritePosition();
     },
-
-    //not using 
 
     handleKeyDown : function ( e )
     {
@@ -117,16 +115,16 @@ var Player = cc.Sprite.extend({
     {
         if( this.flippedX )
         {
-            this.bullets[this.bulletCount] = new Bullet( this.x, this.y, "left");
-            g_sharedGameLayer.addBullet( this.bullets[this.bulletCount] );
+            g_bulletArray[g_bulletCount] = new Bullet( this.x, this.y, "left");
+            g_sharedGameLayer.addBullet( g_bulletArray[g_bulletCount] );
         }
         else
         {
-            this.bullets[this.bulletCount] = new Bullet(this.x,this.y,"right");
-            g_sharedGameLayer.addBullet( this.bullets[this.bulletCount] );
+            g_bulletArray[g_bulletCount] = new Bullet(this.x,this.y,"right");
+            g_sharedGameLayer.addBullet( g_bulletArray[g_bulletCount] );
         }
 
-        this.bulletCount++    
+        g_bulletCount++    
 
     },
 
@@ -139,8 +137,17 @@ var Player = cc.Sprite.extend({
             this._attack = false;
         }
     },
+
+    closeTo: function( obj ) 
+    {
+        var myPos = this.getPosition();
+        var oPos = obj.getPosition();
+        return ( ( Math.abs( myPos.x - oPos.x ) <= 49 ) &&
+             ( Math.abs( myPos.y - oPos.y ) <= 50 ) );
+    },
+
     //recode handle collision
-    handleCollision: function( oldRect, newRect ) 
+    handleCollision : function( oldRect, newRect ) 
     {
         if ( this.ground ) {
             if ( !this.ground.onTop( newRect ) ) 

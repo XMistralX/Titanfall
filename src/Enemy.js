@@ -24,8 +24,6 @@ var Enemy = cc.Sprite.extend({
         this.updateSpritePosition();
     },
 
-    //not using 
-
     handleKeyDown : function ( e )
     {
         if ( Enemy.KEYMAP[ e ] != undefined ) 
@@ -59,7 +57,7 @@ var Enemy = cc.Sprite.extend({
         var newPositionRect = this.getEnemyRect();
         this.handleCollision( currentPositionRect,
                               newPositionRect );
-
+        this.handleCollision();
         
     },
 
@@ -117,16 +115,16 @@ var Enemy = cc.Sprite.extend({
     {
         if( this.flippedX )
         {
-            this.bullets[this.bulletCount] = new Bullet( this.x, this.y, "left");
-            g_sharedGameLayer.addBullet( this.bullets[this.bulletCount] );
+            g_bulletArray[g_bulletCount] = new Bullet( this.x, this.y, "left");
+            g_sharedGameLayer.addBullet( g_bulletArray[g_bulletCount] );
         }
         else
         {
-            this.bullets[this.bulletCount] = new Bullet(this.x,this.y,"right");
-            g_sharedGameLayer.addBullet( this.bullets[this.bulletCount] );
+            g_bulletArray[g_bulletCount] = new Bullet(this.x,this.y,"right");
+            g_sharedGameLayer.addBullet( g_bulletArray[g_bulletCount] );
         }
 
-        this.bulletCount++    
+        g_bulletCount++    
 
     },
 
@@ -134,7 +132,30 @@ var Enemy = cc.Sprite.extend({
     {
         
     },
-    //recode handle collision
+    
+    closeTo: function( obj ) 
+    {
+        var myPos = this.getPosition();
+        var oPos = obj.getPosition();
+        console.log(( Math.abs( myPos.x - oPos.x ) <= 5 ));
+        return ( ( Math.abs( myPos.x - oPos.x ) <= 5 )  );
+    },
+
+    handleCollision : function ()
+    {
+
+        g_bulletArray.forEach( function (b )
+        {
+            if ( this.closeTo( b ) )
+            {
+                g_sharedGameLayer.removeChild(this);
+                g_sharedGameLayer.removeChild(b);
+            }
+           
+                
+        },this);
+    },
+/**
     handleCollision: function( oldRect, newRect ) 
     {
         if ( this.ground ) {
@@ -163,7 +184,7 @@ var Enemy = cc.Sprite.extend({
         
 
 
-    },
+    },*/
     
     getEnemyRect: function() 
     {
