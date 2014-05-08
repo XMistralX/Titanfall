@@ -4,6 +4,7 @@ var Enemy = cc.Sprite.extend({
         this._super();
         this.initWithFile( 'images/enemy.png' );
 
+
         this.x = x;
         this.y = y;
         this.g = -1;
@@ -21,20 +22,9 @@ var Enemy = cc.Sprite.extend({
         this.bullets = [];
         this.bulletCount = 0;
 
+
+        cc.Director.getInstance().getScheduler().scheduleCallbackForTarget(this, this.spriteUpdate , 2  , cc.REPEAT_FOREVER  ,  0 , !this._isRunning );
         this.updateSpritePosition();
-    },
-
-    handleKeyDown : function ( e )
-    {
-        if ( Enemy.KEYMAP[ e ] != undefined ) 
-            this[ Enemy.KEYMAP[ e ] ] = true;
-        
-    },
-
-    handleKeyUp : function ( e )
-    {
-        if ( Enemy.KEYMAP[ e ] != undefined ) 
-            this[ Enemy.KEYMAP[ e ] ] = false;
     },
 
     updateSpritePosition: function() 
@@ -43,7 +33,7 @@ var Enemy = cc.Sprite.extend({
                                 Math.round( this.y ) ) );
     },
     
-    update: function( dt) 
+    spriteUpdate: function( ) 
     {
 
         var currentPositionRect = this.getEnemyRect();
@@ -52,7 +42,7 @@ var Enemy = cc.Sprite.extend({
         
         this.updateXMovement();
         this.updateSpritePosition();
-        this.attack();
+
 
         var newPositionRect = this.getEnemyRect();
         this.handleCollision( currentPositionRect,
@@ -61,24 +51,32 @@ var Enemy = cc.Sprite.extend({
         
     },
 
+    move : function ( direction )
+    {
+        if ( direction == "left") 
+        {
+            this.x += 20 ;
+            this.flippedX = false;
+            this.setFlippedX(this.flippedX);
+        }
+        else
+        {
+            this.x -= 20;
+            this.flippedX = true;
+            this.setFlippedX(this.flippedX);
+        }
+    },
+
     updateXMovement: function() 
     {
-            // add velocity and accerelation
-            if ( this._moveRight ) 
+            if ( this.closeTo( g_player , 100) ) 
             {
-                this.x += 20 ;
-                this.flippedX = false;
-                this.setFlippedX(this.flippedX);
-                this._moveRight = false;
-                console.log("move right"+this.x);
+                this.attack();
+                
             } 
-            if( this._moveLeft)
+            else
             {
-                this.x -= 20;
-                this.flippedX = true;
-                this.setFlippedX(this.flippedX);
-                this._moveLeft = false;
-                console.log("move left"+this.x);
+                this.move("left");
             }
 
 
@@ -115,12 +113,12 @@ var Enemy = cc.Sprite.extend({
     {
         if( this.flippedX )
         {
-            g_bulletArray[g_bulletCount] = new Bullet( this.x, this.y, "left");
+            g_bulletArray[g_bulletCount] = new Bullet( this.x, this.y, "left" , "e");
             g_sharedGameLayer.addBullet( g_bulletArray[g_bulletCount] );
         }
         else
         {
-            g_bulletArray[g_bulletCount] = new Bullet(this.x,this.y,"right");
+            g_bulletArray[g_bulletCount] = new Bullet(this.x,this.y,"right", "e");
             g_sharedGameLayer.addBullet( g_bulletArray[g_bulletCount] );
         }
 
@@ -130,15 +128,15 @@ var Enemy = cc.Sprite.extend({
 
     attack : function ()
     {
-        
+        this.flippedX = true;
+        this.intializeBullet();
     },
     
-    closeTo: function( obj ) 
+    closeTo: function( obj , length ) 
     {
         var myPos = this.getPosition();
         var oPos = obj.getPosition();
-        console.log(( Math.abs( myPos.x - oPos.x ) <= 5 ));
-        return ( ( Math.abs( myPos.x - oPos.x ) <= 5 )  );
+        return ( ( Math.abs( myPos.x - oPos.x ) <= length )  );
     },
 
     handleCollision : function ()
@@ -146,7 +144,7 @@ var Enemy = cc.Sprite.extend({
 
         g_bulletArray.forEach( function (b )
         {
-            if ( this.closeTo( b ) )
+            if ( this.closeTo( b , 5 ) && b.getTag() == "p" )
             {
                 g_sharedGameLayer.removeChild(this);
                 g_sharedGameLayer.removeChild(b);

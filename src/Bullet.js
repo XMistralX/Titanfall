@@ -1,9 +1,10 @@
 var Bullet = cc.Sprite.extend({
-    ctor:function( x, y , bulletDirection )
+    ctor:function( x, y , bulletDirection , tag )
     {
         this._super();
         this.initWithFile('images/Bullet.png');
 
+        this.tag = tag;
         this.x = x;
         this.y = y;
         this._vx = 5;
@@ -12,6 +13,11 @@ var Bullet = cc.Sprite.extend({
         
         this.setBulletDirection();
         this.updateSpritePosition();
+    },
+
+    getTag : function ()
+    {
+        return this.tag;
     },
 
     getX : function ()

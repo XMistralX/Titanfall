@@ -115,12 +115,12 @@ var Player = cc.Sprite.extend({
     {
         if( this.flippedX )
         {
-            g_bulletArray[g_bulletCount] = new Bullet( this.x, this.y, "left");
+            g_bulletArray[g_bulletCount] = new Bullet( this.x, this.y, "left" , "p");
             g_sharedGameLayer.addBullet( g_bulletArray[g_bulletCount] );
         }
         else
         {
-            g_bulletArray[g_bulletCount] = new Bullet(this.x,this.y,"right");
+            g_bulletArray[g_bulletCount] = new Bullet(this.x,this.y,"right", "p");
             g_sharedGameLayer.addBullet( g_bulletArray[g_bulletCount] );
         }
 

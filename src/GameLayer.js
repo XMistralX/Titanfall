@@ -6,6 +6,7 @@ var g_sharedGameLayer;
 var g_bulletArray ;
 var g_bulletCount ;
 var g_childArray ;
+var g_player ;
 
 var GameLayer = cc.LayerColor.extend(
 {
@@ -22,6 +23,7 @@ var GameLayer = cc.LayerColor.extend(
         g_childArray.push(this.background);
         this.player = new Player( 400, 25, this);
         g_childArray.push(this.player);
+        g_player = this.player;
         this.enemy = new Enemy(500,25);
         g_childArray.push(this.enemy);
 
