@@ -8,13 +8,14 @@ var Player = cc.Sprite.extend({
         this.y = y;
         this.g = -1;
         this.vx = 0;
-        this.vy = 0;
+        this.vy = 5;
 
         this._moveLeft = false;
         this._moveRight = false;
         this._jump = false;
         this._attack = false;
         this.flippedX = false;
+        this.direction = "right";
 
         this.ground = null;
         this.blocks = [];
@@ -48,7 +49,7 @@ var Player = cc.Sprite.extend({
 
         var currentPositionRect = this.getPlayerRect();
 
-        //this.updateYMovement();
+        this.updateYMovement();
         
         this.updateXMovement();
         this.updateSpritePosition();
@@ -59,6 +60,11 @@ var Player = cc.Sprite.extend({
                               newPositionRect );
 
         
+    },
+
+    getDirection : function ()
+    {
+        return this.direction;
     },
 
     updateXMovement: function() 
@@ -79,6 +85,7 @@ var Player = cc.Sprite.extend({
                 this.setFlippedX(this.flippedX);
                 this._moveLeft = false;
                 console.log("move left"+this.x);
+
             }
 
 
@@ -88,13 +95,13 @@ var Player = cc.Sprite.extend({
 
     updateYMovement: function() 
     {
-        /*if ( this.ground ) 
+        if ( this.y <=  25 ) 
         {
             this.vy = 0;
-            if ( this.jump ) 
+            if ( this._jump ) 
             {
                 this.vy = this.jumpV;
-                this.y = this.ground.getTopY() + this.vy;
+                this.y = 25 + this.vy;
                 this.ground = null;
             }
         } 
@@ -102,7 +109,7 @@ var Player = cc.Sprite.extend({
         {
             this.vy += this.g;
             this.y += this.vy;
-        }*/
+        }
     },
 
     isSameDirection: function( dir )
@@ -172,7 +179,16 @@ var Player = cc.Sprite.extend({
             }
         }
 
-        
+        g_bulletArray.forEach( function (b )
+        {
+            if ( this.closeTo( b , 5 ) && b.getTag() == "e" )
+            {
+                g_sharedGameLayer.removeChild(this);
+                g_sharedGameLayer.removeChild(b);
+            }
+           
+                
+        },this);
 
 
     },

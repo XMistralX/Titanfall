@@ -24,9 +24,19 @@ var GameLayer = cc.LayerColor.extend(
         this.player = new Player( 400, 25, this);
         g_childArray.push(this.player);
         g_player = this.player;
-        this.enemy = new Enemy(500,25);
+
+
+        this.enemy = new Enemy(750,25);
         g_childArray.push(this.enemy);
 
+        this.enemy = new Enemy(1000,25);
+        g_childArray.push(this.enemy);
+
+        this.enemy = new Enemy(1500,25);
+        g_childArray.push(this.enemy);
+
+        this.enemy = new Enemy(2000,25);
+        g_childArray.push(this.enemy);
         var followAction = cc.Follow.create(this.player , cc.rect(0,0,2126,216));
         this.runAction(followAction);
 

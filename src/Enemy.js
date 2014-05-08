@@ -11,10 +11,7 @@ var Enemy = cc.Sprite.extend({
         this.vx = 0;
         this.vy = 0;
 
-        this._moveLeft = false;
-        this._moveRight = false;
-        this._jump = false;
-        this._attack = false;
+
         this.flippedX = false;
 
         this.ground = null;
@@ -23,8 +20,13 @@ var Enemy = cc.Sprite.extend({
         this.bulletCount = 0;
 
 
-        cc.Director.getInstance().getScheduler().scheduleCallbackForTarget(this, this.spriteUpdate , 2  , cc.REPEAT_FOREVER  ,  0 , !this._isRunning );
+        cc.Director.getInstance().getScheduler().scheduleCallbackForTarget(this, this.spriteUpdate , 1  , cc.REPEAT_FOREVER  ,  0 , !this._isRunning );
         this.updateSpritePosition();
+    },
+
+    update : function ()
+    {
+        this.handleCollision();
     },
 
     updateSpritePosition: function() 
@@ -53,30 +55,39 @@ var Enemy = cc.Sprite.extend({
 
     move : function ( direction )
     {
-        if ( direction == "left") 
+        if ( direction == "right") 
         {
             this.x += 20 ;
-            this.flippedX = false;
+            this.flippedX = true;
             this.setFlippedX(this.flippedX);
         }
         else
         {
             this.x -= 20;
-            this.flippedX = true;
+            this.flippedX = false;
             this.setFlippedX(this.flippedX);
         }
     },
 
     updateXMovement: function() 
     {
-            if ( this.closeTo( g_player , 100) ) 
+            if ( this.closeTo( g_player , 200) ) 
             {
+
                 this.attack();
                 
             } 
             else
             {
-                this.move("left");
+                var random = Math.floor(( Math.random() *1 )+1);
+                if( random == 1)
+                {
+                    this.move("left")
+                }
+                else
+                {
+                    this.move("right");
+                }
             }
 
 
